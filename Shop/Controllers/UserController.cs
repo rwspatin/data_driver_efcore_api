@@ -33,9 +33,15 @@ namespace Shop.Controllers
                 return BadRequest(ModelState);
 
             try{
+                //Forces user aways be an employee
+                model.Role = "employee";
+                
                 context.Users.Add(model);
                 await context.SaveChangesAsync();
             
+                //Don't send password to screen
+                model.Password="";
+
                 return Ok(model);
             }catch
             {
@@ -61,6 +67,9 @@ namespace Shop.Controllers
                 context.Entry<User>(model).State = EntityState.Modified;
                 await context.SaveChangesAsync();
             
+                //Don't send password to screen
+                model.Password="";
+
                 return Ok(model);
             }
             catch
@@ -84,6 +93,9 @@ namespace Shop.Controllers
                 return NotFound(new {message = "Usuário ou senha inválidos"});
             
             var token = TokenService.GenerateToken(user);
+
+            //Don't send password to screen
+            user.Password="";
 
             return new{
                 user = user,
