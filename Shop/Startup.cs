@@ -31,6 +31,8 @@ namespace Shop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
+
             //Zip our Json before send to screen
             //Html decompress this later
             services.AddResponseCompression(opt =>{
@@ -75,6 +77,11 @@ namespace Shop
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(x => x
+                            .AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader());
 
             app.UseAuthentication();
             app.UseAuthorization();
