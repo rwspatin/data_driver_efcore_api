@@ -8,13 +8,13 @@ using Shop.Data;
 using Shop.Models;
 namespace Shop.Controllers
 {
-    [Route("products")]
+    [Route("v1/products")]
     public class ProductController : ControllerBase
     {
         [HttpGet]
         [Route("")]
         [AllowAnonymous]
-        public async Task<ActionResult<List<Category>>> Get(
+        public async Task<ActionResult<List<Product>>> Get(
             [FromServices]DataContext context
         ){
             //Quando se faz um select do banco se obtem um proxy da classe de context
@@ -33,7 +33,7 @@ namespace Shop.Controllers
         [HttpGet]
         [Route("{id:int}")]
         [AllowAnonymous]
-        public async Task<ActionResult<Category>> GetById(
+        public async Task<ActionResult<Product>> GetById(
             int id,
             [FromServices]DataContext context
             )
@@ -53,7 +53,7 @@ namespace Shop.Controllers
         [HttpGet]
         [Route("categories/{id:int}")]
         [AllowAnonymous]
-        public async Task<ActionResult<Category>> GetByCategory(
+        public async Task<ActionResult<Product>> GetByCategory(
             int id,
             [FromServices]DataContext context
             )
@@ -76,7 +76,7 @@ namespace Shop.Controllers
         [HttpPost]
         [Route("")]
         [Authorize(Roles = "employee")]
-        public async Task<ActionResult<Category>> Post(
+        public async Task<ActionResult<Product>> Post(
             [FromBody]Product model,
             [FromServices]DataContext context
             )
@@ -98,7 +98,7 @@ namespace Shop.Controllers
         [HttpPut]
         [Route("{id:int}")]
         [Authorize(Roles = "employee")]
-        public async Task<ActionResult<Category>> Put(
+        public async Task<ActionResult<Product>> Put(
             int id, 
             [FromBody]Product model,
             [FromServices]DataContext context

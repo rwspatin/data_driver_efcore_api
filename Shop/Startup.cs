@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +31,16 @@ namespace Shop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Zip our Json before send to screen
+            //Html decompress this later
+            services.AddResponseCompression(opt =>{
+                opt.Providers.Add<GzipCompressionProvider>();
+                opt.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[]{"application/json"});
+            });
+
+            //Carefull cause this will cache all of aplication if dont make correct other parts
+            services.AddResponseCaching();
+
             services.AddControllers();
 
             var key = Encoding.ASCII.GetBytes(Settings.Secret);
